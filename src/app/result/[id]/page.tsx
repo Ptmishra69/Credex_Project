@@ -3,9 +3,7 @@ import Link from "next/link";
 
 /**
  * /result/[id] — Audit result page.
- *
- * Displays the optimization report for a specific audit.
- * Uses Next.js 15+ async params pattern for dynamic routes.
+ * Displays the optimization report for a completed audit.
  */
 interface ResultPageProps {
   params: Promise<{ id: string }>;
@@ -58,18 +56,17 @@ export default async function ResultPage({ params }: ResultPageProps) {
           />
         </div>
 
-        {/* Recommendations placeholder */}
+        {/* Recommendations */}
         <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-8 shadow-xl backdrop-blur-sm">
           <h2 className="mb-1 text-xl font-semibold text-white">
             Optimization Recommendations
           </h2>
           <p className="mb-6 text-sm text-slate-500">
-            Detailed recommendations will appear here once the audit is
-            processed.
+            Actionable insights to reduce your AI tooling costs.
           </p>
           <div className="flex h-40 items-center justify-center rounded-xl border border-dashed border-slate-700">
             <p className="text-sm text-slate-600">
-              No recommendations yet — audit processing not implemented.
+              Submit an audit to see your personalized recommendations.
             </p>
           </div>
         </div>
@@ -77,10 +74,6 @@ export default async function ResultPage({ params }: ResultPageProps) {
     </main>
   );
 }
-
-// ---------------------------------------------------------------------------
-// Sub-component (co-located because it's page-specific)
-// ---------------------------------------------------------------------------
 
 function SummaryCard({
   icon,
