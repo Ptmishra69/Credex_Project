@@ -1,15 +1,6 @@
 import { NextResponse } from "next/server";
 
-/**
- * GET /api/health
- *
- * Simple health check endpoint. Returns a static success response.
- * Useful for:
- * - Verifying the API layer is functional
- * - Uptime monitoring (e.g., UptimeRobot, Vercel checks)
- * - CI/CD smoke tests
- * - Load balancer health probes
- */
+/** GET /api/health — Returns service status for monitoring and health probes. */
 export async function GET() {
   return NextResponse.json(
     {

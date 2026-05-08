@@ -1,11 +1,8 @@
 /**
- * Placeholder Supabase database types.
+ * Supabase database types.
  *
- * In production, generate this file automatically with:
+ * To regenerate from your live schema, run:
  *   npx supabase gen types typescript --project-id <your-id> > src/types/database.ts
- *
- * For now, we define a minimal shape so the Supabase client is typed
- * and autocomplete works for table names.
  */
 export type Database = {
   public: {
