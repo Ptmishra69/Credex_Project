@@ -74,7 +74,46 @@ Hours Worked - 3 hours
 **Goal**: Wire form submission to an audit engine that generates savings recommendations.
 
 **Tasks**:
-- Build `src/lib/audit/engine.ts` — core calculation logic
-- Save audit to Supabase on submission
-- Generate result page with real data at `/result/[id]`
-- Display recommendations with savings breakdown
+-  Build `src/lib/audit/engine.ts` — core calculation logic
+-  Save audit to Supabase on submission
+-  Generate result page with real data at `/result/[id]`
+-  Display recommendations with savings breakdown
+
+---
+
+## DAY - 3 (08-05-2026)
+
+Hours Worked - 3 hours
+
+# what did i do today
+
+### Audit Engine
+- **Domain Types**: Created `src/lib/audit/types.ts` — strict definitions for `AuditInput`, `AuditResult`, and `Recommendation` to ensure financial accuracy.
+- **Pricing Catalog**: Built `src/lib/audit/pricing.ts` — O(1) lookup map of all supported AI vendors, plans, and real-world pricing models (flat/per-user/usage).
+- **Rules Engine**: Created `src/lib/audit/rules.ts` — deterministic optimization heuristics for team efficiency, tool consolidation (e.g., Cursor vs. Copilot), and enterprise overspend.
+- **Calculation Helpers**: Built `src/lib/audit/calculations.ts` — pure mathematical functions for current spend, optimized spend, and annual savings.
+- **Recommendation Generator**: Created `src/lib/audit/recommendations.ts` — orchestrates rule application across all tools with conflict resolution logic.
+- **Main Engine Orchestrator**: Implemented `src/lib/audit/engine.ts` — single entry point (`generateAudit`) that transforms user input into a complete optimization report.
+
+### Verification
+- **Test Scenarios**: Created `scratch/verify-engine.ts` with real-world test cases (Solo Dev overspend, Small Startup Team inefficiency) and verified defensible savings outputs.
+
+# what i learned today:
+
+- **Deterministic vs. AI Logic**: For financial audits, a hardcoded rules engine is superior to LLM reasoning because it is 100% predictable, explainable, and doesn't hallucinate pricing.
+- **O(1) Map Lookups**: Using an object map for the pricing catalog instead of an array makes looking up tool/plan data significantly faster as the list grows.
+- **Pure Function Calculations**: Keeping math logic in pure functions makes the system easily unit-testable and ensures that `$current - $savings` always equals `$optimized` across the entire app.
+- **Conflict Resolution in Rules**: When multiple rules apply to one tool, the engine now correctly chooses the one with the highest financial impact (savings).
+
+# plan for tomorrow
+
+## DAY 4 — Result UI & Integration
+**Goal**: Connect the form to the engine and build the high-fidelity result dashboard.
+
+**Tasks**:
+- Implement Server Action for form submission.
+- Save audit results to Supabase `audits` table.
+-Build the Savings Hero section (Big numbers + Gauge).
+- Build the Recommendation Cards UI (Tool, Action, Reason, Savings).
+- Implement Tool Breakdown tables.
+- Add "Email Report" lead capture form.
