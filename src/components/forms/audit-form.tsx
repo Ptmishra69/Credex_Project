@@ -1,10 +1,13 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusCircle, Calculator, Info } from "lucide-react";
 import { auditFormSchema, type AuditFormValues } from "@/lib/validators/audit-form";
+import { submitAudit } from "@/lib/actions/audit";
+import { AuditInput, ToolId } from "@/lib/audit/types";
 import { ToolRow } from "./tool-row";
 import {
   Form,
@@ -32,6 +35,8 @@ const STORAGE_KEY = "ai-spend-audit-form";
  * Manages company info, dynamic tool entries, and local persistence.
  */
 export function AuditForm() {
+  const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const form = useForm<AuditFormValues>({
     resolver: zodResolver(auditFormSchema),
     defaultValues: {
@@ -74,9 +79,38 @@ export function AuditForm() {
     }
   }, [formValues]);
 
-  function onSubmit(data: AuditFormValues) {
-    // TODO: Send to audit engine and redirect to /result/[id]
-    console.log("[AuditForm] submitted:", data);
+  async function onSubmit(data: AuditFormValues) {
+    setIsSubmitting(true);
+    console.log("[AuditForm] initiating submission:", data.companyName);
+    
+    try {
+      // Transform form data to engine input type
+      const auditInput: AuditInput = {
+        companyName: data.companyName,
+        teamSize: data.teamSize,
+        useCase: data.useCase,
+        tools: data.tools.map(t => ({
+          toolId: t.toolId as ToolId,
+          planId: t.planId,
+          monthlySpend: t.monthlySpend,
+          seats: t.seats,
+        })),
+      };
+
+      const result = await submitAudit(auditInput);
+
+      if (result.success && result.id) {
+        // Clear local storage on success
+        localStorage.removeItem(STORAGE_KEY);
+        router.push(`/result/${result.id}`);
+      } else {
+        throw new Error(result.error || "Submission failed");
+      }
+    } catch (err) {
+      console.error("[AuditForm] Submission error:", err);
+      // We'll fallback to a generic error for now
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -209,9 +243,9 @@ export function AuditForm() {
           <Button
             type="submit"
             className="w-full h-12 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold shadow-lg shadow-indigo-500/20 transition-all active:scale-[0.98] glow-brand"
-            disabled={form.formState.isSubmitting}
+            disabled={isSubmitting}
           >
-            {form.formState.isSubmitting ? "Processing..." : "Generate Optimization Audit →"}
+            {isSubmitting ? "Analyzing Spend Pattern..." : "Generate Optimization Audit →"}
           </Button>
           <p className="mt-4 text-center text-xs text-slate-500">
             Securely analyzed. No data shared without your consent.
