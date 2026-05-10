@@ -14,6 +14,8 @@ export const metadata: Metadata = {
     "Startups input their AI tooling spend and receive an optimization audit with actionable savings recommendations.",
 };
 
+import { Toaster } from "@/components/ui/sonner";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -21,7 +23,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={inter.variable}>
-      <body className="min-h-screen antialiased">{children}</body>
+      <body className="min-h-screen antialiased bg-slate-950 text-white">
+        {children}
+        <Toaster theme="dark" position="top-right" closeButton />
+      </body>
     </html>
   );
 }
