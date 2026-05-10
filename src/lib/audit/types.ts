@@ -11,7 +11,7 @@ export type ToolId =
   | "anthropic_api" 
   | "openai_api" 
   | "gemini" 
-  | "windsurf_v0";
+  | "windsurf";
 
 export type UseCase = "coding" | "marketing" | "customer_support" | "operations" | "general";
 
@@ -45,7 +45,7 @@ export interface PricingPlan {
   label: string;
   priceMonthly: number | null; // null for custom/enterprise
   pricingModel: PricingModel;
-  description: string;
+  description?: string; // Optional to prevent strict catalog errors during updates
 }
 
 /**
@@ -71,6 +71,14 @@ export interface Recommendation {
   reason: string;
   priority: "high" | "medium" | "low";
   action: "downgrade" | "consolidate" | "switch" | "optimize";
+}
+
+/**
+ * Interface for a business rule
+ */
+export interface AuditRule {
+  id: string;
+  check: (input: AuditInput, tool: ToolInput) => Recommendation | null;
 }
 
 /**

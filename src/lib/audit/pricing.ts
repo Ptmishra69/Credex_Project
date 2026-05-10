@@ -1,96 +1,96 @@
-import { ToolId, ToolPricing, PricingPlan } from "./types";
+import { ToolId, ToolPricing } from "./types";
 
 /**
  * The single source of truth for AI tool pricing.
- * Structured for O(1) lookups and future extensibility.
+ * Synchronized with docs/PRICING_DATA.md (Last verified: 2026-05-07).
  */
 export const PRICING_CATALOG: Record<ToolId, ToolPricing> = {
   cursor: {
     id: "cursor",
     name: "Cursor",
     plans: {
-      hobby: { id: "hobby", label: "Hobby", priceMonthly: 0, pricingModel: "flat", description: "Free for individuals" },
-      pro: { id: "pro", label: "Pro", priceMonthly: 20, pricingModel: "flat", description: "Unlimited completions and premium models" },
-      business: { id: "business", label: "Business", priceMonthly: 40, pricingModel: "per_user", description: "Team management and centralized billing" },
-      enterprise: { id: "enterprise", label: "Enterprise", priceMonthly: null, pricingModel: "per_user", description: "Custom pricing for large teams" },
+      hobby: { id: "hobby", label: "Hobby", priceMonthly: 0, pricingModel: "flat" },
+      pro: { id: "pro", label: "Pro", priceMonthly: 20, pricingModel: "per_user" },
+      pro_plus: { id: "pro_plus", label: "Pro+", priceMonthly: 60, pricingModel: "flat" },
+      ultra: { id: "ultra", label: "Ultra", priceMonthly: 200, pricingModel: "flat" },
+      teams: { id: "teams", label: "Teams", priceMonthly: 40, pricingModel: "per_user" },
     },
   },
   github_copilot: {
     id: "github_copilot",
     name: "GitHub Copilot",
     plans: {
-      individual: { id: "individual", label: "Individual", priceMonthly: 10, pricingModel: "flat", description: "For individual developers" },
-      business: { id: "business", label: "Business", priceMonthly: 19, pricingModel: "per_user", description: "For teams and organizations" },
-      enterprise: { id: "enterprise", label: "Enterprise", priceMonthly: 39, pricingModel: "per_user", description: "Advanced security and customization" },
-    },
-  },
-  chatgpt: {
-    id: "chatgpt",
-    name: "ChatGPT",
-    plans: {
-      free: { id: "free", label: "Free", priceMonthly: 0, pricingModel: "flat", description: "Basic access" },
-      plus: { id: "plus", label: "Plus", priceMonthly: 20, pricingModel: "flat", description: "Individual power user" },
-      team: { id: "team", label: "Team", priceMonthly: 25, pricingModel: "per_user", description: "For small teams (billed annually at $25, or $30 monthly)" },
-      enterprise: { id: "enterprise", label: "Enterprise", priceMonthly: null, pricingModel: "per_user", description: "Custom large scale access" },
+      pro: { id: "pro", label: "Pro", priceMonthly: 10, pricingModel: "per_user" },
+      pro_plus: { id: "pro_plus", label: "Pro+", priceMonthly: 39, pricingModel: "flat" },
+      business: { id: "business", label: "Business", priceMonthly: 19, pricingModel: "per_user" },
+      enterprise: { id: "enterprise", label: "Enterprise", priceMonthly: 39, pricingModel: "per_user" },
     },
   },
   claude: {
     id: "claude",
-    name: "Claude",
+    name: "Claude (Anthropic)",
     plans: {
-      free: { id: "free", label: "Free", priceMonthly: 0, pricingModel: "flat", description: "Basic usage" },
-      pro: { id: "pro", label: "Pro", priceMonthly: 20, pricingModel: "flat", description: "Unlimited usage for individuals" },
-      team: { id: "team", label: "Team", priceMonthly: 25, pricingModel: "per_user", description: "For teams (billed annually, approx $30 monthly)" },
+      free: { id: "free", label: "Free", priceMonthly: 0, pricingModel: "flat" },
+      pro: { id: "pro", label: "Pro", priceMonthly: 20, pricingModel: "per_user" },
+      max_5x: { id: "max_5x", label: "Max 5x", priceMonthly: 100, pricingModel: "flat" },
+      max_20x: { id: "max_20x", label: "Max 20x", priceMonthly: 200, pricingModel: "flat" },
+      team_standard: { id: "team_standard", label: "Team Standard", priceMonthly: 25, pricingModel: "per_user" },
+      team_premium: { id: "team_premium", label: "Team Premium", priceMonthly: 125, pricingModel: "per_user" },
+      enterprise: { id: "enterprise", label: "Enterprise", priceMonthly: null, pricingModel: "per_user" },
+    },
+  },
+  chatgpt: {
+    id: "chatgpt",
+    name: "ChatGPT (OpenAI)",
+    plans: {
+      free: { id: "free", label: "Free", priceMonthly: 0, pricingModel: "flat" },
+      plus: { id: "plus", label: "Plus", priceMonthly: 20, pricingModel: "per_user" },
+      pro: { id: "pro", label: "Pro", priceMonthly: 200, pricingModel: "flat" },
+      business_team: { id: "business_team", label: "Business (Team)", priceMonthly: 25, pricingModel: "per_user" },
+      enterprise: { id: "enterprise", label: "Enterprise", priceMonthly: null, pricingModel: "per_user" },
     },
   },
   openai_api: {
     id: "openai_api",
     name: "OpenAI API",
     plans: {
-      usage: { id: "usage", label: "Usage Based", priceMonthly: 0, pricingModel: "usage_based", description: "Pay per token" },
+      usage: { id: "usage", label: "Usage-Based", priceMonthly: null, pricingModel: "usage_based" },
     },
   },
   anthropic_api: {
     id: "anthropic_api",
     name: "Anthropic API",
     plans: {
-      usage: { id: "usage", label: "Usage Based", priceMonthly: 0, pricingModel: "usage_based", description: "Pay per token" },
+      usage: { id: "usage", label: "Usage-Based", priceMonthly: null, pricingModel: "usage_based" },
     },
   },
   gemini: {
     id: "gemini",
-    name: "Gemini",
+    name: "Google Gemini",
     plans: {
-      free: { id: "free", label: "Free", priceMonthly: 0, pricingModel: "flat", description: "Basic access" },
-      advanced: { id: "advanced", label: "Advanced", priceMonthly: 20, pricingModel: "flat", description: "Ultra 1.0 access" },
-      business: { id: "business", label: "Business", priceMonthly: 20, pricingModel: "per_user", description: "Workspace integration" },
-      enterprise: { id: "enterprise", label: "Enterprise", priceMonthly: 30, pricingModel: "per_user", description: "Advanced security" },
+      free: { id: "free", label: "Free", priceMonthly: 0, pricingModel: "flat" },
+      pro_one: { id: "pro_one", label: "Gemini Pro (Google One)", priceMonthly: 19.99, pricingModel: "flat" },
+      ultra: { id: "ultra", label: "Gemini Ultra", priceMonthly: 249.99, pricingModel: "flat" },
+      workspace_add_on: { id: "workspace_add_on", label: "Workspace AI Add-on", priceMonthly: 24, pricingModel: "per_user" },
+      enterprise: { id: "enterprise", label: "Enterprise", priceMonthly: null, pricingModel: "per_user" },
     },
   },
-  windsurf_v0: {
-    id: "windsurf_v0",
-    name: "Windsurf/v0",
+  windsurf: {
+    id: "windsurf",
+    name: "Windsurf / v0",
     plans: {
-      pro: { id: "pro", label: "Pro", priceMonthly: 20, pricingModel: "flat", description: "Individual power user" },
+      free: { id: "free", label: "Free", priceMonthly: 0, pricingModel: "flat" },
+      pro: { id: "pro", label: "Pro", priceMonthly: 15, pricingModel: "per_user" },
+      team: { id: "team", label: "Team", priceMonthly: 25, pricingModel: "per_user" },
     },
   },
 };
 
-/**
- * Helper to get a specific plan's price
- */
-export function getPlanPrice(toolId: ToolId, planId: string): number {
-  const tool = PRICING_CATALOG[toolId];
-  if (!tool) return 0;
-  
-  const plan = tool.plans[planId];
-  return plan?.priceMonthly || 0;
+export function getToolPricing(toolId: string) {
+  return PRICING_CATALOG[toolId as ToolId];
 }
 
-/**
- * Helper to get all plans for a tool
- */
-export function getToolPlans(toolId: ToolId): PricingPlan[] {
-  const tool = PRICING_CATALOG[toolId];
-  return tool ? Object.values(tool.plans) : [];
+export function getPlanPricing(toolId: string, planId: string) {
+  const tool = PRICING_CATALOG[toolId as ToolId];
+  return tool?.plans[planId] || null;
 }
