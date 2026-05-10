@@ -1,8 +1,5 @@
 /**
  * Supabase database types.
- *
- * To regenerate from your live schema, run:
- *   npx supabase gen types typescript --project-id <your-id> > src/types/database.ts
  */
 export type Database = {
   public: {
@@ -12,8 +9,9 @@ export type Database = {
           id: string;
           company_name: string;
           team_size: number | null;
-          input_data: Record<string, unknown>;
-          result_data: Record<string, unknown> | null;
+          industry: string | null;
+          input_data: any; // Using any for JSONB to avoid strict structural conflicts
+          result_data: any; 
           status: "pending" | "processing" | "completed" | "failed";
           total_monthly_spend: number | null;
           estimated_savings: number | null;
@@ -24,8 +22,9 @@ export type Database = {
           id?: string;
           company_name: string;
           team_size?: number | null;
-          input_data: Record<string, unknown>;
-          result_data?: Record<string, unknown> | null;
+          industry?: string | null;
+          input_data: any;
+          result_data?: any;
           status?: "pending" | "processing" | "completed" | "failed";
           total_monthly_spend?: number | null;
           estimated_savings?: number | null;
