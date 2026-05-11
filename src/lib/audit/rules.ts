@@ -1,5 +1,5 @@
 import { AuditInput, ToolInput, Recommendation, AuditRule } from "./types";
-import { getPlanPricing } from "./pricing";
+import { getPlanPricing, getToolPricing } from "./pricing";
 
 /**
  * DETERMINISTIC BUSINESS RULES
