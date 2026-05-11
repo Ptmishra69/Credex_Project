@@ -169,16 +169,20 @@ const priceOverageRule: AuditRule = {
 
     // Allow a small $2 buffer for regional tax/FX variations
     if (tool.monthlySpend > (expectedMonthly + 2)) {
+      const toolData = getToolPricing(tool.toolId);
+      const toolName = toolData?.name || tool.toolId;
+      const planName = officialPlan.label;
+
       return {
         toolId: tool.toolId,
-        toolName: officialPlan.name,
+        toolName: toolName,
         action: "optimize",
-        currentPlanId: officialPlan.name,
-        recommendedPlanId: officialPlan.name,
+        currentPlanId: planName,
+        recommendedPlanId: planName,
         currentMonthlyCost: tool.monthlySpend,
         optimizedMonthlyCost: expectedMonthly,
         monthlySavings: tool.monthlySpend - expectedMonthly,
-        reason: `Your reported spend for ${officialPlan.name} ($${tool.monthlySpend}) exceeds the official list price of $${expectedMonthly}. You may be paying for redundant administrative seats or ghost subscriptions.`,
+        reason: `Your reported spend for ${toolName} ${planName} ($${tool.monthlySpend}) exceeds the official list price of $${expectedMonthly}. You may be paying for redundant administrative seats or ghost subscriptions.`,
         priority: "medium",
       };
     }
