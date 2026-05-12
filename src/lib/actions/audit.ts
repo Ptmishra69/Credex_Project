@@ -2,7 +2,7 @@
 
 import { getSupabaseClient } from "@/lib/db/supabase";
 import { AuditInput } from "@/lib/audit/types";
-import { generateAudit } from "@/lib/audit/engine";
+import { runAudit } from "@/lib/audit/engine";
 
 /**
  * Server action to process and save audit results.
@@ -12,13 +12,13 @@ export async function submitAudit(input: AuditInput) {
     const supabase = getSupabaseClient();
     
     // 1. Run the audit engine on the server
-    const result = generateAudit(input);
+    const result = await runAudit(input);
 
     // 2. Prepare database payload
     const payload = {
       company_name: input.companyName,
       team_size: input.teamSize,
-      industry: input.useCase, // Using useCase as industry for now
+      industry: input.primaryUseCase,
       input_data: input.tools,
       result_data: result,
       total_monthly_spend: result.currentMonthlySpend,

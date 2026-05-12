@@ -171,6 +171,7 @@ Hours Worked - 3 hours
 
 ---
 
+## Day 5 - I am doing the task of day 5 on day 4 because I am having end semester exam from 13th May , I am in GNIOT which is affilated to aktu university.
 
 ## DAY 6 — The "Founder's Documentation" & Submission Phase
 **Goal**: Finalize all technical and entrepreneurial documentation for the Credex submission.
@@ -193,5 +194,4 @@ Hours Worked - 3 hours
    - `USER_INTERVIEWS.md`: Transcripts and insights from 3 real-world founder conversations.
 
 ---
-## Day 5 - I am doing the task of day 5 on day 4 because I am having end semester exam from 13th May , I am in GNIOT which is affilated to aktu university.
 

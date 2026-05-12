@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { generateAudit } from "@/lib/audit/engine";
+import { runAudit } from "@/lib/audit/engine";
 import { AuditResult } from "@/lib/audit/types";
 import { generateExecutiveSummary } from "@/lib/ai/generate-summary";
 import { calculateBenchmarks, BenchmarkResult } from "@/lib/benchmark";
@@ -50,7 +50,7 @@ export function ResultClient({
             return;
           }
           const input = JSON.parse(savedData);
-          auditResult = generateAudit(input);
+          auditResult = await runAudit(input);
           setResult(auditResult);
         }
 

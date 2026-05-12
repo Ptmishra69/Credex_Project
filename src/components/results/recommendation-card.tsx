@@ -19,18 +19,22 @@ export function RecommendationCard({ recommendation }: RecommendationCardProps) 
     priority,
   } = recommendation;
 
-  const actionStyles = {
+  const actionStyles: Record<string, string> = {
     downgrade: "bg-blue-500/10 text-blue-400 border-blue-500/20",
     consolidate: "bg-amber-500/10 text-amber-400 border-amber-500/20",
     switch: "bg-indigo-500/10 text-indigo-400 border-indigo-500/20",
     optimize: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+    cancel: "bg-rose-500/10 text-rose-400 border-rose-500/20",
+    advisory: "bg-violet-500/10 text-violet-400 border-violet-500/20",
   };
 
-  const actionIcons = {
+  const actionIcons: Record<string, React.ReactNode> = {
     downgrade: <Tag className="h-3.5 w-3.5" />,
     consolidate: <Users className="h-3.5 w-3.5" />,
     switch: <ArrowRight className="h-3.5 w-3.5" />,
     optimize: <Zap className="h-3.5 w-3.5" />,
+    cancel: <Zap className="h-3.5 w-3.5" />,
+    advisory: <Info className="h-3.5 w-3.5" />,
   };
 
   return (

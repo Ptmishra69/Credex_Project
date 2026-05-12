@@ -42,7 +42,7 @@ export function AuditForm() {
     defaultValues: {
       companyName: "",
       teamSize: 1,
-      useCase: "general",
+      useCase: "mixed",
       tools: [{ toolId: "", planId: "", monthlySpend: 0, seats: 1 }],
     },
     mode: "onChange",
@@ -88,9 +88,10 @@ export function AuditForm() {
       const auditInput: AuditInput = {
         companyName: data.companyName,
         teamSize: data.teamSize,
-        useCase: data.useCase,
+        primaryUseCase: data.useCase,
         tools: data.tools.map(t => ({
           toolId: t.toolId as ToolId,
+          toolName: t.toolId, // Will be resolved by the engine
           planId: t.planId,
           monthlySpend: t.monthlySpend,
           seats: t.seats,
@@ -180,10 +181,10 @@ export function AuditForm() {
                     </FormControl>
                     <SelectContent className="bg-slate-900 border-slate-800 text-slate-200">
                       <SelectItem value="coding">Software Development</SelectItem>
-                      <SelectItem value="marketing">Marketing & Content</SelectItem>
-                      <SelectItem value="customer_support">Customer Support</SelectItem>
-                      <SelectItem value="operations">Business Operations</SelectItem>
-                      <SelectItem value="general">General Productivity</SelectItem>
+                      <SelectItem value="writing">Writing & Content</SelectItem>
+                      <SelectItem value="research">Research & Analysis</SelectItem>
+                      <SelectItem value="data_analysis">Data Analysis</SelectItem>
+                      <SelectItem value="mixed">Mixed / General</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />

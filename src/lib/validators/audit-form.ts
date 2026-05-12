@@ -16,7 +16,7 @@ export const toolEntrySchema = z.object({
 export const auditFormSchema = z.object({
   companyName: z.string().min(2, "Company name is required"),
   teamSize: z.number().int().min(1, "Team size must be at least 1"),
-  useCase: z.enum(["coding", "marketing", "customer_support", "operations", "general"]),
+  useCase: z.enum(["coding", "writing", "research", "data_analysis", "mixed"]),
   tools: z
     .array(toolEntrySchema)
     .min(1, "Please add at least one AI tool to audit"),
