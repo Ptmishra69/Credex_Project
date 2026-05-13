@@ -1,9 +1,5 @@
 import { ToolId, ToolPricing } from "./types";
 
-/**
- * The single source of truth for AI tool pricing.
- * Synchronized with docs/PRICING_DATA.md (Last verified: 2026-05-07).
- */
 export const PRICING_CATALOG: Record<ToolId, ToolPricing> = {
   cursor: {
     id: "cursor",

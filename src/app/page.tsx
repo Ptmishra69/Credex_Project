@@ -1,15 +1,11 @@
 import { ArrowRight, Sparkles, TrendingDown, Shield } from "lucide-react";
 import Link from "next/link";
 
-/**
- * Home page — landing page for AI Spend Audit.
- * Directs users to the /audit flow.
- */
 export default function HomePage() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950">
       <div className="mx-auto max-w-4xl px-6 py-24">
-        {/* Hero */}
+
         <div className="text-center">
           <div className="mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-indigo-500/20 bg-indigo-500/10 px-4 py-1.5 text-sm text-indigo-300">
             <Sparkles className="h-4 w-4" />
@@ -36,7 +32,7 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Value props */}
+
         <div className="mt-24 grid gap-6 sm:grid-cols-3">
           <ValueCard
             icon={<TrendingDown className="h-6 w-6 text-emerald-400" />}

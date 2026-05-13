@@ -4,17 +4,14 @@ import { getSupabaseClient } from "@/lib/db/supabase";
 import { AuditInput } from "@/lib/audit/types";
 import { runAudit } from "@/lib/audit/engine";
 
-/**
- * Server action to process and save audit results.
- */
 export async function submitAudit(input: AuditInput) {
   try {
     const supabase = getSupabaseClient();
     
-    // 1. Run the audit engine on the server
+
     const result = await runAudit(input);
 
-    // 2. Prepare database payload
+
     const payload = {
       company_name: input.companyName,
       team_size: input.teamSize,
@@ -26,7 +23,7 @@ export async function submitAudit(input: AuditInput) {
       status: "completed" as const,
     };
 
-    // 3. Insert into Supabase
+
     const { data, error } = await (supabase
       .from("audits")
       .insert(payload as any)

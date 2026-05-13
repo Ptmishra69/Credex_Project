@@ -41,7 +41,7 @@ export function ResultClient({
         
         let auditResult = initialData;
 
-        // If no server data, try to fallback to local (for old links or dev)
+
         if (!auditResult) {
           const savedData = localStorage.getItem("ai-spend-audit-form");
           if (!savedData) {
@@ -54,11 +54,11 @@ export function ResultClient({
           setResult(auditResult);
         }
 
-        // 3. Generate Benchmarks
+
         const benchmarkData = calculateBenchmarks(auditResult, teamSize);
         setBenchmark(benchmarkData);
 
-        // 4. Generate AI summary
+
         const aiSummary = await generateExecutiveSummary(auditResult);
         setSummary(aiSummary);
         
@@ -81,7 +81,7 @@ export function ResultClient({
 
   return (
     <div className="space-y-12 animate-in fade-in duration-700">
-      {/* 1. Dashboard Overview */}
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
           <SavingsHero
@@ -96,17 +96,17 @@ export function ResultClient({
         </div>
       </div>
 
-      {/* 2. AI Summary */}
+
       <AuditSummary summary={summary} />
 
-      {/* 3. Data Visualizations */}
+
       <div className="grid gap-6 lg:grid-cols-2">
         <SpendChart
           currentSpend={result.currentMonthlySpend}
           optimizedSpend={result.optimizedMonthlySpend}
         />
         
-        {/* Insight Panel (Placeholder for Step 1 above) */}
+
         <div className="flex flex-col justify-center rounded-2xl border border-slate-800 bg-slate-900/40 p-8">
           <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-widest mb-4">
             Key Insights
@@ -134,10 +134,10 @@ export function ResultClient({
         </div>
       </div>
 
-      {/* 4. Recommendations List */}
+
       <AuditBreakdown recommendations={result.recommendations} />
 
-      {/* 5. CTA Section */}
+
       <section className="rounded-3xl border border-indigo-500/20 bg-indigo-500/5 p-12 text-center shadow-2xl shadow-indigo-500/10">
         <h2 className="text-3xl font-bold text-white">
           {hasSavings 
@@ -171,7 +171,7 @@ export function ResultClient({
         </div>
       </section>
 
-      {/* 6. Footer Metadata */}
+
       <div className="text-center text-[10px] font-medium text-slate-600 uppercase tracking-widest pb-12">
         Audit ID: {auditId} • Analyzed on {new Date().toLocaleDateString()} • Powered by Credex Engine v1.0
       </div>

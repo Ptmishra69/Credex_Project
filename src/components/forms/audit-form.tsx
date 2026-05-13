@@ -30,10 +30,6 @@ import {
 
 const STORAGE_KEY = "ai-spend-audit-form";
 
-/**
- * Audit input form.
- * Manages company info, dynamic tool entries, and local persistence.
- */
 export function AuditForm() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -53,7 +49,7 @@ export function AuditForm() {
     name: "tools",
   });
 
-  // 1. Persistence Logic: Restore from localStorage on mount
+
   useEffect(() => {
     if (typeof window === "undefined") return;
     
@@ -61,7 +57,7 @@ export function AuditForm() {
     if (savedData) {
       try {
         const parsed = JSON.parse(savedData);
-        // We use a timeout to ensure the field array is ready before resetting
+
         setTimeout(() => {
           form.reset(parsed);
         }, 0);
@@ -71,7 +67,7 @@ export function AuditForm() {
     }
   }, [form]);
 
-  // 2. Persistence Logic: Save to localStorage on change
+
   const formValues = form.watch();
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -81,17 +77,16 @@ export function AuditForm() {
 
   async function onSubmit(data: AuditFormValues) {
     setIsSubmitting(true);
-    console.log("[AuditForm] initiating submission:", data.companyName);
-    
+
     try {
-      // Transform form data to engine input type
+
       const auditInput: AuditInput = {
         companyName: data.companyName,
         teamSize: data.teamSize,
         primaryUseCase: data.useCase,
         tools: data.tools.map(t => ({
           toolId: t.toolId as ToolId,
-          toolName: t.toolId, // Will be resolved by the engine
+
           planId: t.planId,
           monthlySpend: t.monthlySpend,
           seats: t.seats,
@@ -101,7 +96,7 @@ export function AuditForm() {
       const result = await submitAudit(auditInput);
 
       if (result.success && result.id) {
-        // Clear local storage on success
+
         localStorage.removeItem(STORAGE_KEY);
         router.push(`/result/${result.id}`);
       } else {
@@ -109,7 +104,7 @@ export function AuditForm() {
       }
     } catch (err) {
       console.error("[AuditForm] Submission error:", err);
-      // We'll fallback to a generic error for now
+
       setIsSubmitting(false);
     }
   }
@@ -117,7 +112,7 @@ export function AuditForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-10">
-        {/* Section 1: Company Info */}
+
         <section className="space-y-6 rounded-2xl border border-slate-800 bg-slate-900/40 p-6 backdrop-blur-sm">
           <div className="flex items-center gap-2 border-b border-slate-800 pb-4">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-500/10 ring-1 ring-indigo-500/20">
@@ -194,7 +189,7 @@ export function AuditForm() {
           </div>
         </section>
 
-        {/* Section 2: AI Tools */}
+
         <section className="space-y-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -239,7 +234,7 @@ export function AuditForm() {
           )}
         </section>
 
-        {/* Submit Button */}
+
         <div className="pt-6">
           <Button
             type="submit"

@@ -2,16 +2,12 @@ import { AuditInput, AuditResult, Recommendation, CompanyStage } from "./types";
 import { AUDIT_RULES, classifyCompany } from "./rules";
 import { calculateMonthlySavings, calculateAnnualSavings } from "./calculations";
 
-/**
- * CORE AUDIT ENGINE
- * Orchestrates the evaluation layers and generates a structured financial report.
- */
 export async function runAudit(input: AuditInput): Promise<AuditResult> {
   const recommendations: Recommendation[] = [];
   const currentMonthlySpend = input.tools.reduce((sum, t) => sum + t.monthlySpend, 0);
   const companyStage = classifyCompany(input.teamSize);
 
-  // Execute rules for each tool
+
   for (const tool of input.tools) {
     for (const rule of AUDIT_RULES) {
       const rec = rule.check(input, tool);
@@ -21,9 +17,7 @@ export async function runAudit(input: AuditInput): Promise<AuditResult> {
     }
   }
 
-  // Calculate optimized spend
-  // Note: We subtract savings from recommendations to get optimized spend.
-  // We filter for distinct recommendations per tool to avoid double-counting.
+
   const totalMonthlySavings = recommendations.reduce((sum, r) => sum + r.monthlySavings, 0);
   const optimizedMonthlySpend = Math.max(0, currentMonthlySpend - totalMonthlySavings);
   
@@ -35,11 +29,11 @@ export async function runAudit(input: AuditInput): Promise<AuditResult> {
     ? Math.round(((monthlySavings / currentMonthlySpend) * 100) * 10) / 10
     : 0;
 
-  // Generate top saving opportunity
+
   const topRec = [...recommendations].sort((a, b) => b.monthlySavings - a.monthlySavings)[0];
   const topSavingOpportunity = topRec ? `${topRec.toolName} (${topRec.action})` : null;
 
-  // Generate Verdict
+
   const verdict = generateVerdict(monthlySavings, potentialSavingsPercentage, companyStage);
 
   return {

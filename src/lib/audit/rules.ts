@@ -1,9 +1,7 @@
 import { AuditInput, ToolInput, Recommendation, AuditRule, CompanyStage } from "./types";
 import { getPlanPricing, getToolPricing } from "./pricing";
 
-/**
- * UTILS
- */
+
 export function classifyCompany(teamSize: number): CompanyStage {
   if (teamSize <= 1) return "solo";
   if (teamSize <= 10) return "startup";
@@ -11,16 +9,13 @@ export function classifyCompany(teamSize: number): CompanyStage {
   return "enterprise";
 }
 
-/**
- * LAYER 2 — PLAN EFFICIENCY
- * Detects enterprise overkill and unnecessary team plans.
- */
+
 const planEfficiencyRule: AuditRule = {
   id: "plan-efficiency",
   check: (input, tool) => {
     const stage = classifyCompany(input.teamSize);
     
-    // Rule: Solo users on Team/Enterprise plans
+
     if (stage === "solo" && (tool.planId === "teams" || tool.planId.includes("enterprise") || tool.planId.includes("team"))) {
       const proPlan = getPlanPricing(tool.toolId, "pro") || getPlanPricing(tool.toolId, "plus");
       if (proPlan && proPlan.priceMonthly !== null) {
@@ -45,14 +40,11 @@ const planEfficiencyRule: AuditRule = {
   }
 };
 
-/**
- * LAYER 3 — SAME-VENDOR OPTIMIZATION
- * Checks for cheaper same-vendor options (Downgrades).
- */
+
 const sameVendorOptimizationRule: AuditRule = {
   id: "same-vendor-opt",
   check: (input, tool) => {
-    // Claude Team Standard with low seat count
+
     if (tool.toolId === "claude" && tool.planId === "team_standard" && tool.seats < 5) {
       const proPlan = getPlanPricing("claude", "pro");
       if (proPlan && proPlan.priceMonthly !== null) {
@@ -78,14 +70,11 @@ const sameVendorOptimizationRule: AuditRule = {
   }
 };
 
-/**
- * LAYER 4 — USE CASE FIT
- * Matches tools to primary workflow (Coding, Research, etc).
- */
+
 const useCaseFitRule: AuditRule = {
   id: "use-case-fit",
   check: (input, tool) => {
-    // Coding team using generalist tools heavily but missing specialized ones
+
     if (input.primaryUseCase === "coding") {
       const hasCursor = input.tools.some(t => t.toolId === "cursor");
       if (tool.toolId === "chatgpt" && !hasCursor) {
@@ -110,10 +99,7 @@ const useCaseFitRule: AuditRule = {
   }
 };
 
-/**
- * LAYER 5 — REDUNDANT TOOLING
- * Detects overlapping subscriptions.
- */
+
 const redundancyRule: AuditRule = {
   id: "redundancy",
   check: (input, tool) => {
@@ -141,9 +127,7 @@ const redundancyRule: AuditRule = {
   }
 };
 
-/**
- * LAYER 6 — API VS SUBSCRIPTION
- */
+
 const apiEconomicsRule: AuditRule = {
   id: "api-economics",
   check: (input, tool) => {
@@ -171,9 +155,7 @@ const apiEconomicsRule: AuditRule = {
   }
 };
 
-/**
- * LAYER 7 — CREDIT MARKETPLACE
- */
+
 const creditMarketplaceRule: AuditRule = {
   id: "credit-marketplace",
   check: (input, tool) => {
@@ -199,9 +181,7 @@ const creditMarketplaceRule: AuditRule = {
   }
 };
 
-/**
- * PRICE OVERAGE RULE (Custom layer 2)
- */
+
 const priceOverageRule: AuditRule = {
   id: "price-overage",
   check: (input, tool) => {
