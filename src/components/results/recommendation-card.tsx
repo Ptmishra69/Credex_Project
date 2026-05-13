@@ -101,7 +101,9 @@ export function RecommendationCard({ recommendation }: RecommendationCardProps) 
 
           <div className={cn(
             "mt-4 rounded-lg px-2 py-1 text-center text-[10px] font-bold uppercase tracking-widest",
-            priority === "high" ? "bg-rose-500/10 text-rose-400" : "bg-slate-800 text-slate-400"
+            priority === "high" ? "bg-rose-500/10 text-rose-400" : 
+            priority === "medium" ? "bg-amber-500/10 text-amber-400" : 
+            "bg-slate-800 text-slate-400"
           )}>
             {priority} priority
           </div>

@@ -6,8 +6,8 @@ import { z } from "zod";
 export const toolEntrySchema = z.object({
   toolId: z.string().min(1, "Please select a tool"),
   planId: z.string().min(1, "Please select a plan"),
-  monthlySpend: z.number().min(0, "Spend must be at least 0"),
-  seats: z.number().int("Seats must be a whole number").min(1, "Minimum 1 seat required"),
+  monthlySpend: z.number().min(0, "Spend cannot be negative").max(100000, "Please verify this amount"),
+  seats: z.number().int("Seats must be a whole number").min(1, "Minimum 1 seat").max(10000, "Please verify seat count"),
 });
 
 /**
@@ -15,7 +15,7 @@ export const toolEntrySchema = z.object({
  */
 export const auditFormSchema = z.object({
   companyName: z.string().min(2, "Company name is required"),
-  teamSize: z.number().int().min(1, "Team size must be at least 1"),
+  teamSize: z.number().int().min(1, "Team size must be at least 1").max(10000, "Please verify team size"),
   useCase: z.enum(["coding", "writing", "research", "data_analysis", "mixed"]),
   tools: z
     .array(toolEntrySchema)

@@ -71,14 +71,13 @@ export function ResultClient({
     }
 
     prepareResult();
-  }, [auditId, initialData]);
+  }, [auditId, initialData, teamSize]);
 
   if (loading) return <LoadingSkeleton />;
   if (error) return <ErrorState message={error} />;
   if (!result) return <EmptyState />;
 
   const hasSavings = result.monthlySavings > 0;
-  const isHighValue = result.monthlySavings > 0;
 
   return (
     <div className="space-y-12 animate-in fade-in duration-700">
@@ -115,16 +114,20 @@ export function ResultClient({
           <ul className="space-y-4">
             <InsightItem 
               icon={<Sparkles className="h-4 w-4 text-indigo-400" />}
-              text={`You can reduce your monthly spend by ${result.summaryMetadata.potentialSavingsPercentage}% with these optimizations.`}
+              text={result.verdict}
             />
             <InsightItem 
-              icon={<Calendar className="h-4 w-4 text-emerald-400" />}
+              icon={<ArrowRight className="h-4 w-4 text-emerald-400" />}
+              text={`You can reduce your monthly spend by ${Math.round(result.summaryMetadata.potentialSavingsPercentage)}% with these optimizations.`}
+            />
+            <InsightItem 
+              icon={<Calendar className="h-4 w-4 text-amber-400" />}
               text={`Capturing these savings results in $${result.annualSavings.toLocaleString()} recovered annually.`}
             />
             {result.summaryMetadata.topSavingOpportunity && (
               <InsightItem 
-                icon={<ArrowRight className="h-4 w-4 text-amber-400" />}
-                text={`The biggest opportunity was found in ${result.summaryMetadata.topSavingOpportunity}.`}
+                icon={<ArrowRight className="h-4 w-4 text-cyan-400" />}
+                text={`Top opportunity: ${result.summaryMetadata.topSavingOpportunity}.`}
               />
             )}
           </ul>
@@ -137,12 +140,12 @@ export function ResultClient({
       {/* 5. CTA Section */}
       <section className="rounded-3xl border border-indigo-500/20 bg-indigo-500/5 p-12 text-center shadow-2xl shadow-indigo-500/10">
         <h2 className="text-3xl font-bold text-white">
-          {isHighValue 
+          {hasSavings 
             ? "Maximize Your Savings Potential" 
             : "Keep Your Stack Optimized"}
         </h2>
         <p className="mx-auto mt-4 max-w-xl text-lg text-slate-400">
-          {isHighValue 
+          {hasSavings 
             ? "Our engine identified significant overspend. Book a free consultation with a Credex expert to implement these savings across your entire organization." 
             : "You've done a great job keeping your AI stack lean. Subscribe to our monthly audit report to stay ahead of new pricing changes and overlaps."}
         </p>
@@ -151,7 +154,7 @@ export function ResultClient({
           <EmailReportModal 
             auditId={auditId} 
             trigger={
-              isHighValue ? (
+              hasSavings ? (
                 <Button size="lg" className="h-14 px-10 text-base font-bold bg-indigo-600 hover:bg-indigo-500 shadow-xl shadow-indigo-500/20 transition-all hover:scale-105 gap-2">
                   <PhoneCall className="h-5 w-5" />
                   Book Savings Consultation

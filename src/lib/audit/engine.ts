@@ -32,7 +32,7 @@ export async function runAudit(input: AuditInput): Promise<AuditResult> {
   
   const isOptimized = monthlySavings === 0;
   const potentialSavingsPercentage = currentMonthlySpend > 0 
-    ? (monthlySavings / currentMonthlySpend) * 100 
+    ? Math.round(((monthlySavings / currentMonthlySpend) * 100) * 10) / 10
     : 0;
 
   // Generate top saving opportunity

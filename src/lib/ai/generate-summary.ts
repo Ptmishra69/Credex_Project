@@ -60,5 +60,5 @@ function getDeterministicSummary(result: AuditResult): string {
   const topTool = summaryMetadata.topSavingOpportunity || "multiple tools";
   const savingsPct = summaryMetadata.potentialSavingsPercentage;
 
-  return `Our audit of ${companyName}'s AI stack has identified a potential annual saving of $${annualSavings.toLocaleString()}, representing a ${savingsPct}% reduction in current spend. The primary optimization opportunity lies within ${topTool}. By consolidating redundant licenses and right-sizing team-tier plans, the organization can reallocate significant budget without compromising on the quality of AI-powered workflows. We recommend immediate action on high-priority items to capture these efficiencies.`;
+  return `Our audit of ${companyName}'s AI stack has identified a potential annual saving of $${annualSavings.toLocaleString()}, representing a ${Math.round(savingsPct)}% reduction in current spend. The primary optimization opportunity lies within ${topTool}. By consolidating redundant licenses and right-sizing team-tier plans, the organization can reallocate significant budget without compromising on the quality of AI-powered workflows. We recommend immediate action on high-priority items to capture these efficiencies.`;
 }
