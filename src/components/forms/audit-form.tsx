@@ -86,7 +86,7 @@ export function AuditForm() {
         primaryUseCase: data.useCase,
         tools: data.tools.map(t => ({
           toolId: t.toolId as ToolId,
-
+          toolName: t.toolId,
           planId: t.planId,
           monthlySpend: t.monthlySpend,
           seats: t.seats,
