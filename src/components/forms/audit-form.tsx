@@ -9,6 +9,7 @@ import { auditFormSchema, type AuditFormValues } from "@/lib/validators/audit-fo
 import { submitAudit } from "@/lib/actions/audit";
 import { AuditInput, ToolId } from "@/lib/audit/types";
 import { ToolRow } from "./tool-row";
+import { toast } from "sonner";
 import {
   Form,
   FormControl,
@@ -95,16 +96,30 @@ export function AuditForm() {
 
       const result = await submitAudit(auditInput);
 
-      if (result.success && result.id) {
-
+      if (result.success) {
+        if (result.isPreview) {
+          toast.info("Database Unreachable", {
+            description: "Showing you a local preview of your audit results.",
+          });
+        } else {
+          toast.success("Audit Generated!", {
+            description: "Your results are ready and saved.",
+          });
+        }
+        
         localStorage.removeItem(STORAGE_KEY);
         router.push(`/result/${result.id}`);
       } else {
-        throw new Error(result.error || "Submission failed");
+        toast.error("Audit Failed", {
+          description: result.error || "Please check your inputs and try again.",
+        });
+        setIsSubmitting(false);
       }
     } catch (err) {
       console.error("[AuditForm] Submission error:", err);
-
+      toast.error("Submission Error", {
+        description: err instanceof Error ? err.message : "Something went wrong. Please try again.",
+      });
       setIsSubmitting(false);
     }
   }
